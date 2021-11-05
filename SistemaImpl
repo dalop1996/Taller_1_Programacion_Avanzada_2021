@@ -1,0 +1,31 @@
+package Logica;
+import Dominio.*;
+public class SistemaImpl implements Sistema{
+	private ListaClientes l_clientes;
+	private ListaPersonajes l_personajes;
+	private ListaEstadisticas l_estadisticas;
+	
+	public SistemaImpl() {
+		l_clientes = new ListaClientes(1000);
+		l_personajes = new ListaPersonajes(1000);
+		l_estadisticas = new ListaEstadisticas(1000);
+		
+	}
+
+	public boolean agregarPersonaje(String nombre_p, String rol, int cantidad_s, String[] listaSkins,
+			String[] listaCalidad) {
+		Personaje per = new Personaje(nombre_p,rol,cantidad_s,listaSkins,listaCalidad);
+		boolean ingreso = l_personajes.ingresar(per);
+		return ingreso;
+	}
+
+	public boolean agregarEstadistica(String nombre_p_r, int recaudacion) {
+		Estadistica est = new Estadistica(nombre_p_r,recaudacion);
+		boolean ingreso = l_estadisticas.ingresar(est);
+		return ingreso;
+	}
+	
+	
+	
+	
+}
