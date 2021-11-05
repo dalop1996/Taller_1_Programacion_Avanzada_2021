@@ -1,0 +1,50 @@
+package Dominio;
+
+public class Personaje {
+	private String nombre_p;
+	private String rol;
+	private int cantidad_s;
+	private String[] ListaSkins;
+	private String[] ListaCalidadS;
+	public Personaje(String nombre_p, String rol, int cantidad_s, String[] listaSkins, String[] listaCalidadS) {
+		super();
+		this.nombre_p = nombre_p;
+		this.rol = rol;
+		this.cantidad_s = cantidad_s;
+		this.ListaCalidadS = ListaCalidadS;
+		this.ListaSkins = ListaSkins;
+	}
+	public String getNombre_p() {
+		return nombre_p;
+	}
+	public void setNombre_p(String nombre_p) {
+		this.nombre_p = nombre_p;
+	}
+	public String getRol() {
+		return rol;
+	}
+	public void setRol(String rol) {
+		this.rol = rol;
+	}
+	public int getCantidad_s() {
+		return cantidad_s;
+	}
+	public void setCantidad_s(int cantidad_s) {
+		this.cantidad_s = cantidad_s;
+	}
+	public String[] getListaSkins() {
+		return ListaSkins;
+	}
+	public void setListaSkins(String[] listaSkins) {
+		ListaSkins = listaSkins;
+	}
+	public String[] getListaCalidadS() {
+		return ListaCalidadS;
+	}
+	public void setListaCalidadS(String[] listaCalidadS) {
+		ListaCalidadS = listaCalidadS;
+	}
+	
+	
+	
+}
