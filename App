@@ -1,0 +1,93 @@
+package Logica;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class APP {
+	public static void main(String[] args) throws IOException {
+		Scanner scaner = new Scanner(System.in);
+		Sistema sis = new SistemaImpl();
+		//int cantCuentas = leerCuentas(sis);
+		int cantPersonajes = leerPersonajes(sis);
+		int cantEstadisticas = leerEstadisticas(sis);
+	}
+
+	private static int leerEstadisticas(Sistema sis) throws IOException {
+		BufferedReader arch = new BufferedReader(new FileReader("Estadisticas.txt"));
+		String linea;
+		int cant=0;
+		while((linea = arch.readLine()) != null){
+			String[] parte = linea.split(",");
+			String nombre_p_r = parte[0];
+			int recaudacion = Integer.parseInt(parte[1]);
+			
+			sis.agregarEstadistica(nombre_p_r,recaudacion);
+			cant++;
+		}
+		return cant;
+	}
+
+	private static int leerPersonajes(Sistema sis) throws IOException {
+		BufferedReader arch = new BufferedReader(new FileReader("Personajes.txt"));
+		String linea;
+		
+		String[] ListaSkins = new String[500];
+		String[] ListaCalidad = new String[500];
+		int cant=0;
+		while((linea = arch.readLine()) != null) {
+			String skin = "";
+			String calidad ="";
+			int cantidadS=3;
+			String[] parte = linea.split(",");
+			String nombre_p = parte[0];
+			String rol = parte[1];
+			int cantidad_s = Integer.parseInt(parte[2]);
+			while(cantidadS < 3 + (cantidad_s*2)) {
+				skin += ","+parte[cantidadS];
+				cantidadS++;
+				calidad +=","+parte[cantidadS];
+				cantidadS++;
+			}
+			ListaSkins[cant] = skin;
+			ListaCalidad[cant] = calidad;
+			//System.out.println(nombre_p+rol+cantidad_s+ListaSkins[cant]+ListaCalidad[cant]);
+			sis.agregarPersonaje(nombre_p,rol,cantidad_s,ListaSkins,ListaCalidad);
+			cant++;
+		}
+		return cant;
+	}
+
+	private static int leerCuentas(Sistema sis) throws IOException {
+		BufferedReader arch = new BufferedReader(new FileReader("Cuentas.txt"));
+		String linea;
+		int cant_p=0;
+		int cant=0;
+		String[] lista_personajes = new String[155];
+		String[] lista_Skins = new String[500];
+		while((linea = arch.readLine()) != null ) {
+			String[] parte = linea.split(",");
+			String nombre_c = parte[0];
+			String clave = parte[1];
+			String nick = parte[2];
+			int nivel = Integer.parseInt(parte[3]);
+			int rp = Integer.parseInt(parte[4]);
+			int cantidad_p = Integer.parseInt(parte[5]);
+			for(int i=6; i<2*cantidad_p+6;i++) {
+				String nombre_p = parte[i];
+				//revisar como leer todas las skins y personajes
+				int cantidad_s = Integer.parseInt(parte[i+1]);
+				i++;
+				lista_personajes[cant_p] = nombre_p;
+				for(int j=i+1;j<cantidad_s+i+1;j++) {
+					
+				}
+				cant_p++;
+			}
+			
+		}
+		return cant;
+	}
+	
+}
