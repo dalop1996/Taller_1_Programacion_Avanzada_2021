@@ -1,0 +1,24 @@
+package Logica;
+
+import Dominio.Cliente;
+
+public class ListaClientes {
+	public Cliente[] lista_c;
+	public int cant;
+	public int max;
+	
+	public ListaClientes(int max) {
+		lista_c = new Cliente[max];
+		cant = 0;
+		this.max = max;
+	}
+	public boolean ingresar(Cliente cliente) {
+		if(cant<max) {
+			lista_c[cant] = cliente;
+			cant++;
+			return true;
+		}else {
+			return false;
+		}
+	}
+}
