@@ -1,0 +1,25 @@
+package Dominio;
+
+public class Estadistica {
+	private String nombre_p_r;
+	private int recaudacion;
+	public Estadistica(String nombre_p_r, int recaudacion) {
+		super();
+		this.nombre_p_r = nombre_p_r;
+		this.recaudacion = recaudacion;
+	}
+	public String getNombre_p_r() {
+		return nombre_p_r;
+	}
+	public void setNombre_p_r(String nombre_p_r) {
+		this.nombre_p_r = nombre_p_r;
+	}
+	public int getRecaudacion() {
+		return recaudacion;
+	}
+	public void setRecaudacion(int recaudacion) {
+		this.recaudacion = recaudacion;
+	}
+	
+	
+}
