@@ -1,0 +1,9 @@
+package Logica;
+
+public interface Sistema {
+
+	boolean agregarPersonaje(String nombre_p, String rol, int cantidad_s, String[] listaSkins, String[] listaCalidad);
+
+	boolean agregarEstadistica(String nombre_p_r, int recaudacion);
+	
+}
