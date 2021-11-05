@@ -1,0 +1,24 @@
+package Logica;
+
+import Dominio.Personaje;
+
+public class ListaPersonajes {
+	public Personaje[] lista_p;
+	public int cant;
+	public int max;
+	
+	public ListaPersonajes(int max) {
+		lista_p = new Personaje[max];
+		cant=0;
+		this.max=max;
+	}
+	public boolean ingresar(Personaje personaje) {
+		if(cant<max) {
+			lista_p[cant] = personaje;
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+}	
