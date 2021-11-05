@@ -1,0 +1,24 @@
+package Logica;
+
+import Dominio.Estadistica;
+
+public class ListaEstadisticas {
+	public Estadistica[] lista_e;
+	public int cant;
+	public int max;
+	
+	public ListaEstadisticas(int max) {
+		lista_e = new Estadistica[max];
+		cant=0;
+		this.max=max;
+	}
+	public boolean ingresar(Estadistica estadistica) {
+		if(cant<max) {
+			lista_e[cant] = estadistica;
+			cant++;
+			return true;
+		}else {
+			return false;
+		}
+	}
+}	
