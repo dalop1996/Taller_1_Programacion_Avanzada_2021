@@ -2,8 +2,17 @@ package Logica;
 
 public interface Sistema {
 
-	boolean agregarPersonaje(String nombre_p, String rol, int cantidad_s, String[] listaSkins, String[] listaCalidad);
+	boolean agregarPersonaje(String nombre_p, String rol, int cantidad_s, String listaSkins, String listaCalidad);
 
 	boolean agregarEstadistica(String nombre_p_r, int recaudacion);
+
+	boolean agregarCuenta(String nombre_c, String clave, String nick, int nivel, int rp, int cantidad_p, int cantidad_s,
+			String lista_personajes, String lista_Skins, String servidor);
+
+	boolean verificar(String nick, String clave);
+
+	void comprarSkin(String nombre_per, String nick);
+
+	void mostrarInventario(String nick);
 	
 }
