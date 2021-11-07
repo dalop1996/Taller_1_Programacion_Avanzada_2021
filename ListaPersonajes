@@ -1,5 +1,6 @@
 package Logica;
 
+
 import Dominio.Personaje;
 
 public class ListaPersonajes {
@@ -20,5 +21,24 @@ public class ListaPersonajes {
 			return false;
 		}
 	}
-	
+	public Personaje encontrarPersonaje(String nombre_p) {
+		int i=0;
+		while(i<=cant && !lista_p[i].getNombre_p().equals(nombre_p)) {
+			i++;
+		}
+		if(i>cant) {
+			return null;
+		}else {
+			return lista_p[i];
+		}
+		
+	}
+	public String toStringSkin() {
+		String r = "";
+        for (int i = 0; i<cant; i++) {
+            r=r+lista_p[i].getListaSkins().toString()+ "\n";
+
+        }
+        return r;
+	}
 }	
