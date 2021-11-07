@@ -8,11 +8,11 @@ public class Cliente {
 	private int rp;
 	private int cantidad_p;
 	private int cantidad_e;
-	private String[] lista_personajes;
-	private String[] lista_skins;
+	private String lista_personajes;
+	private String lista_skins;
 	private String servidor;
 	public Cliente(String nombre_c, String clave, String nick, int nivel, int rp, int cantidad_p, int cantidad_e,
-			String[] lista_personajes, String[] lista_skins, String servidor) {
+			String lista_personajes, String lista_skins, String servidor) {
 		super();
 		this.nombre_c = nombre_c;
 		this.clave = clave;
@@ -67,16 +67,16 @@ public class Cliente {
 	public void setCantidad_e(int cantidad_e) {
 		this.cantidad_e = cantidad_e;
 	}
-	public String[] getLista_personajes() {
+	public String getLista_personajes() {
 		return lista_personajes;
 	}
-	public void setLista_personajes(String[] lista_personajes) {
+	public void setLista_personajes(String lista_personajes) {
 		this.lista_personajes = lista_personajes;
 	}
-	public String[] getLista_skins() {
+	public String getLista_skins() {
 		return lista_skins;
 	}
-	public void setLista_skins(String[] lista_skins) {
+	public void setLista_skins(String lista_skins) {
 		this.lista_skins = lista_skins;
 	}
 	public String getServidor() {
