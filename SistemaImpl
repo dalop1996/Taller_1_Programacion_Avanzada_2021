@@ -1,4 +1,6 @@
 package Logica;
+import java.util.Scanner;
+
 import Dominio.*;
 public class SistemaImpl implements Sistema{
 	private ListaClientes l_clientes;
@@ -12,10 +14,11 @@ public class SistemaImpl implements Sistema{
 		
 	}
 
-	public boolean agregarPersonaje(String nombre_p, String rol, int cantidad_s, String[] listaSkins,
-			String[] listaCalidad) {
+	public boolean agregarPersonaje(String nombre_p, String rol, int cantidad_s, String listaSkins,
+			String listaCalidad) {
 		Personaje per = new Personaje(nombre_p,rol,cantidad_s,listaSkins,listaCalidad);
 		boolean ingreso = l_personajes.ingresar(per);
+		System.out.println(per.toString());
 		return ingreso;
 	}
 
@@ -24,8 +27,103 @@ public class SistemaImpl implements Sistema{
 		boolean ingreso = l_estadisticas.ingresar(est);
 		return ingreso;
 	}
-	
-	
+
+	@Override
+	public boolean agregarCuenta(String nombre_c, String clave, String nick, int nivel, int rp, int cantidad_p,
+			int cantidad_s, String lista_personajes, String lista_Skins, String servidor) {
+		Cliente cli = new Cliente(nombre_c,clave,nick,nivel,rp,cantidad_p,cantidad_s,lista_personajes,lista_Skins,servidor);
+		boolean ingreso = l_clientes.ingresar(cli);
+		return ingreso;
+	}
+
+	@Override
+	public boolean verificar(String nick, String clave) {
+		return l_clientes.buscarUsuario(nick, clave);
+	}
+
+	@Override
+	public void comprarSkin(String nombre_per, String nick) {
+		Scanner scaner = new Scanner(System.in);
+		if(l_personajes.encontrarPersonaje(nombre_per) != null) {
+			String listaP = l_clientes.encontrarUsuario(nick).getLista_personajes();
+			String listaS = l_personajes.encontrarPersonaje(nombre_per).getListaSkins();
+			String listaC = l_personajes.encontrarPersonaje(nombre_per).getListaCalidadS();
+			int valorSkin =0;
+			int k=0;
+			String[] parteP = listaP.split(",");
+			while(k<155 && !parteP[k].equals(nombre_per)) {
+				k++;
+			}
+			if(k==155) {
+				System.out.println("No puedes comprar la skins porque no tienes este personaje en tu inventario");
+			}else {
+				System.out.println("Skins disponibles de "+nombre_per+":");
+				String[] parteS = listaS.split(",");
+				for(int i=0; i< l_personajes.encontrarPersonaje(nombre_per).getCantidad_s();i++) {
+				
+					System.out.println(parteS[i]);
+				}
+				System.out.println("Escriba el nombre de la Skin a comprar:");
+				String n_skin = scaner.nextLine();
+				
+				int c=0;
+				while(c<l_personajes.encontrarPersonaje(nombre_per).getCantidad_s() && !parteS[c].equals(n_skin)) {
+					c++;
+				}if(c==l_personajes.encontrarPersonaje(nombre_per).getCantidad_s()) {
+					System.out.println("La skin no pertenece a este personaje");
+				}else {
+					String[] parteC = listaC.split(",");
+					if(parteC[c].equals("M")) {
+						valorSkin=3250;
+					}if(parteC[c].equals("D")) {
+						valorSkin=2750;
+					}if(parteC[c].equals("L")) {
+						valorSkin=1820;
+					}if(parteC[c].equals("E")) {
+						valorSkin=1350;
+					}if(parteC[c].equals("N")) {
+						valorSkin=975;
+					}if(l_clientes.encontrarUsuario(nick).getRp() < valorSkin) {
+						System.out.println("No tienes suficientes RP para comprar esta Skin");
+					}else {
+						l_clientes.encontrarUsuario(nick).setRp(l_clientes.encontrarUsuario(nick).getRp() - valorSkin);
+						l_estadisticas.encontrarPersonaje(nombre_per).setRecaudacion(valorSkin+l_estadisticas.encontrarPersonaje(nombre_per).getRecaudacion());
+						System.out.println("Su compra se realizo con exito");
+						listaS+=n_skin+",";
+						l_clientes.encontrarUsuario(nick).setLista_skins(listaS);
+						l_clientes.encontrarUsuario(nick).setCantidad_e(l_clientes.encontrarUsuario(nick).getCantidad_e()+1);
+						//revisar si se agregan bien la skins
+					}
+				}
+			}
+			
+		}else {
+			System.out.println("No se encontro el personaje");
+		}
+		
+	}
+
+	@Override
+	public void mostrarInventario(String nick) {
+		Scanner scaner = new Scanner(System.in);
+		String listaP = l_clientes.encontrarUsuario(nick).getLista_personajes();
+		String listaS = l_clientes.encontrarUsuario(nick).getLista_skins();
+		String[] parteP = listaP.split(",");
+		String[] parteS = listaS.split(",");
+		
+		for(int i=0; i<l_clientes.encontrarUsuario(nick).getCantidad_p();i++) {
+			System.out.println("Personaje: "+ parteP[i]);
+			if(l_clientes.encontrarUsuario(nick).getCantidad_e() == 0) {
+				System.out.println("No tiene skins");
+			}else {
+				for(int k=0; k<l_clientes.encontrarUsuario(nick).getCantidad_e();k++) {
+					System.out.println("Skin "+k+1+": "+ parteS[k]);
+				}
+			}
+			
+		}
+		
+	}
 	
 	
 }
