@@ -21,4 +21,29 @@ public class ListaClientes {
 			return false;
 		}
 	}
+	public boolean buscarUsuario(String nick,String clave) {
+		int i=0;
+		while(i<cant && !lista_c[i].getNick().equals(nick) && !lista_c[i].getClave().equals(clave)) {
+			i++;
+		}
+		if(i==cant) {
+			return false;
+		}else {
+			return true;
+		}
+	
+	}
+	public Cliente encontrarUsuario(String nick) {
+		int i=0;
+		while(i<=cant && !lista_c[i].getNick().equals(nick)) {
+			i++;
+		}
+		if(i>cant) {
+			return null;
+		}else {
+			return lista_c[i];
+		}
+		
+	}
 }
+
