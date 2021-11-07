@@ -9,9 +9,125 @@ public class APP {
 	public static void main(String[] args) throws IOException {
 		Scanner scaner = new Scanner(System.in);
 		Sistema sis = new SistemaImpl();
-		//int cantCuentas = leerCuentas(sis);
+		int cantCuentas = leerCuentas(sis);
 		int cantPersonajes = leerPersonajes(sis);
 		int cantEstadisticas = leerEstadisticas(sis);
+		
+		String respuesta="";
+		while(!respuesta.equals("1") && !respuesta.equals("2") && !respuesta.equals("3")) {
+			System.out.println("Bienvenido al menu princiopal\n¿Desea iniciar sesion [1] , registrarse [2] o cerrar [3] ?");
+			respuesta = scaner.next();
+			if(respuesta.equals("1")) {
+				respuesta =inicioSesion(sis);
+			}if(respuesta.equals("2")) {
+				respuesta=registrarse(sis);
+			}if(respuesta.equals("3")) {
+				cerrar();
+				break;
+			}
+		}	
+
+	}
+
+	private static void cerrar() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static String registrarse(Sistema sis) {
+		Scanner scaner = new Scanner(System.in);
+		int rp = 0;
+		String lista_personaje = "";
+		String lista_Skins ="";
+		System.out.println("Ingrese su nombre de cuenta: ");
+		String nombre_c = scaner.nextLine();
+		System.out.println("Ingrese su contraseña: ");
+		String clave = scaner.nextLine();
+		System.out.println("Ingrese su Nick: ");
+		String nick = scaner.nextLine();
+		System.out.println("Ingrese su region: ");
+		String servidor = scaner.nextLine();
+		
+		sis.agregarCuenta(nombre_c, clave, nick, rp, rp, rp, rp, lista_personaje, lista_Skins, servidor);
+		String res="";
+		while(!res.equals("1") && !res.equals("2")) {
+			System.out.println("¿Desea volver al menu principal [1] o cerrar [2] ?");
+			res = scaner.next();
+			if(res.equals("2")) {
+				cerrar();
+			}if(res.equals("1")) {
+				res="4";
+				break;
+			}
+		}
+		return res;
+	}
+
+	private static String inicioSesion(Sistema sis) {
+		Scanner scaner = new Scanner(System.in);
+		String respuesta="";
+		System.out.println("Ingrese su Nick: ");
+		String nick = scaner.nextLine();
+		System.out.println("Ingrese su contraseña: ");
+		String clave = scaner.nextLine();
+		if(nick.equals("ADMIN") && clave.equals("ADMIN")) {
+			//menu admin
+		}else{
+			if(sis.verificar(nick,clave) == true) {
+				boolean condicion = true;
+				while(condicion) {
+					System.out.println("Bienvenido "+nick+" escoja lo que desee realizar:\n[A] Comprar Skin\n[B] Comprar Personaje\n[C] Skins Disponibles\n[D] Mostrar inventario\n[E] Recargar RP\n[F] Mostrar datos");
+					String res = scaner.next().toUpperCase();
+					if(res.equals("A")) {
+						System.out.println("Ingrese el nombre del personaje a al cual le quieres comprar skin: ");
+						String nombre_per = scaner.next();
+						sis.comprarSkin(nombre_per,nick);
+						condicion = bucle();
+					}else if(res.equals("B")) {
+						
+					}else if(res.equals("C")) {
+						
+					}else if(res.equals("D")) {
+						sis.mostrarInventario(nick);
+						condicion = bucle();
+					}else if(res.equals("E")) {
+						
+					}else if(res.equals("F")) {
+						
+					}else {
+						System.out.println("Ingrese una opcion valida");
+					}
+				}
+				
+			}else {
+				System.out.println("No se encontro a la persona");
+				respuesta="4";
+			}
+		}
+		return respuesta;
+		
+	}
+
+	private static boolean bucle() {
+		Scanner scaner = new Scanner(System.in);
+		String res="";
+		boolean condicion = false;
+		while(!res.equals("1") && !res.equals("2") && !res.equals("3")) {
+			System.out.println("¿Desea realizar otra accion [1] , volver al menu principal [2] o Cerrar[3]");
+			res = scaner.next();
+			if(res.equals("3")) {
+				//arreglar para el que cerrar se termine el programa
+				cerrar();
+				break;
+			}if(res.equals("2")) {
+				res="4";
+				condicion=false;
+				break;
+			}if(res.equals("1")) {
+				condicion = true;
+			}
+		}
+		return condicion;
 	}
 
 	private static int leerEstadisticas(Sistema sis) throws IOException {
@@ -45,15 +161,15 @@ public class APP {
 			String rol = parte[1];
 			int cantidad_s = Integer.parseInt(parte[2]);
 			while(cantidadS < 3 + (cantidad_s*2)) {
-				skin += ","+parte[cantidadS];
+				skin += parte[cantidadS]+",";
 				cantidadS++;
-				calidad +=","+parte[cantidadS];
+				calidad +=parte[cantidadS]+",";
 				cantidadS++;
 			}
 			ListaSkins[cant] = skin;
 			ListaCalidad[cant] = calidad;
 			//System.out.println(nombre_p+rol+cantidad_s+ListaSkins[cant]+ListaCalidad[cant]);
-			sis.agregarPersonaje(nombre_p,rol,cantidad_s,ListaSkins,ListaCalidad);
+			sis.agregarPersonaje(nombre_p,rol,cantidad_s,skin,calidad);
 			cant++;
 		}
 		return cant;
@@ -62,11 +178,12 @@ public class APP {
 	private static int leerCuentas(Sistema sis) throws IOException {
 		BufferedReader arch = new BufferedReader(new FileReader("Cuentas.txt"));
 		String linea;
-		int cant_p=0;
 		int cant=0;
-		String[] lista_personajes = new String[155];
-		String[] lista_Skins = new String[500];
+		int cantidad_s=0;
 		while((linea = arch.readLine()) != null ) {
+			int cant_vueltas =6;
+			String lista_personajes="";
+			String lista_skins="";
 			String[] parte = linea.split(",");
 			String nombre_c = parte[0];
 			String clave = parte[1];
@@ -74,20 +191,25 @@ public class APP {
 			int nivel = Integer.parseInt(parte[3]);
 			int rp = Integer.parseInt(parte[4]);
 			int cantidad_p = Integer.parseInt(parte[5]);
-			for(int i=6; i<2*cantidad_p+6;i++) {
-				String nombre_p = parte[i];
-				//revisar como leer todas las skins y personajes
-				int cantidad_s = Integer.parseInt(parte[i+1]);
-				i++;
-				lista_personajes[cant_p] = nombre_p;
-				for(int j=i+1;j<cantidad_s+i+1;j++) {
-					
+			
+			for(int i=0;i<cantidad_p;i++) {
+				lista_personajes+=parte[cant_vueltas]+",";
+				cant_vueltas++;
+				cantidad_s= Integer.parseInt(parte[cant_vueltas]);
+				cant_vueltas++;
+				for(int j=0;j<cantidad_s;j++) {
+					lista_skins+=parte[cant_vueltas]+",";
+					cant_vueltas++;
 				}
-				cant_p++;
 			}
+			String servidor = parte[cant_vueltas];
+			System.out.println(lista_personajes +lista_skins);
+			sis.agregarCuenta(nombre_c,clave,nick,nivel,rp,cantidad_p,cantidad_s,lista_personajes,lista_skins, servidor);
+			cant++;
 			
 		}
 		return cant;
 	}
+	
 	
 }
