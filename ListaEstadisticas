@@ -21,4 +21,15 @@ public class ListaEstadisticas {
 			return false;
 		}
 	}
+	public Estadistica encontrarPersonaje(String n_personaje) {
+		int i=0;
+		while(i<=cant && !lista_e[i].getNombre_p_r().equals(n_personaje)) {
+			i++;
+		}
+		if(i>cant) {
+			return null;
+		}else {
+			return lista_e[i];
+		}
+	}
 }	
