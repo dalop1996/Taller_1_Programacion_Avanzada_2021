@@ -51,7 +51,13 @@ public class Personaje {
 		return "Personaje [nombre_p=" + nombre_p + ", rol=" + rol + ", cantidad_s=" + cantidad_s + ", ListaSkins="
 				+ ListaSkins + ", ListaCalidadS=" + ListaCalidadS + "]";
 	}
-	
+	/* no se usa
+	public void AgregarSkin(String nameSkin, String QualitySkin) {
+		ListaSkins +=","+nameSkin;
+		ListaCalidadS+=","+QualitySkin;
+		
+				
+	}*/
 	
 	
 	
