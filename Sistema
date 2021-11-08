@@ -14,5 +14,31 @@ public interface Sistema {
 	void comprarSkin(String nombre_per, String nick);
 
 	void mostrarInventario(String nick);
+
+	String VentasRol();
+
+	String VentasRegion();
+
+	String VentasPersonaje();
+
+	String CantPersonajesRol();
+
+
+
+	//void newPersonaje(String newName, String newRol, String newskins, String calidadNewSkins); NO SE USA
+
+	void NewSkin(String newName, String newskin, String newSkinQual);
+
+	void BloquearJugador(String banName);
+
+	String CuentasMayorMenor();
+
+	void comprarPersonaje(String nick);
+
+	void skinsDisponibles(String nick);
+
+	void recargarRP(String nick, int rp);
+
+	void mostrarDatos(String nick);
 	
 }
