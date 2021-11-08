@@ -13,7 +13,6 @@ public class SistemaImpl implements Sistema{
 		l_estadisticas = new ListaEstadisticas(1000);
 		
 	}
-
 	public boolean agregarPersonaje(String nombre_p, String rol, int cantidad_s, String listaSkins,
 			String listaCalidad) {
 		Personaje per = new Personaje(nombre_p,rol,cantidad_s,listaSkins,listaCalidad);
@@ -21,27 +20,20 @@ public class SistemaImpl implements Sistema{
 		System.out.println(per.toString());
 		return ingreso;
 	}
-
 	public boolean agregarEstadistica(String nombre_p_r, int recaudacion) {
 		Estadistica est = new Estadistica(nombre_p_r,recaudacion);
 		boolean ingreso = l_estadisticas.ingresar(est);
 		return ingreso;
 	}
-
-	@Override
 	public boolean agregarCuenta(String nombre_c, String clave, String nick, int nivel, int rp, int cantidad_p,
 			int cantidad_s, String lista_personajes, String lista_Skins, String servidor) {
 		Cliente cli = new Cliente(nombre_c,clave,nick,nivel,rp,cantidad_p,cantidad_s,lista_personajes,lista_Skins,servidor);
 		boolean ingreso = l_clientes.ingresar(cli);
 		return ingreso;
 	}
-
-	@Override
 	public boolean verificar(String nick, String clave) {
 		return l_clientes.buscarUsuario(nick, clave);
 	}
-
-	@Override
 	public void comprarSkin(String nombre_per, String nick) {
 		Scanner scaner = new Scanner(System.in);
 		if(l_personajes.encontrarPersonaje(nombre_per) != null) {
@@ -92,7 +84,6 @@ public class SistemaImpl implements Sistema{
 						listaS+=n_skin+",";
 						l_clientes.encontrarUsuario(nick).setLista_skins(listaS);
 						l_clientes.encontrarUsuario(nick).setCantidad_e(l_clientes.encontrarUsuario(nick).getCantidad_e()+1);
-						//revisar si se agregan bien la skins
 					}
 				}
 			}
@@ -102,8 +93,6 @@ public class SistemaImpl implements Sistema{
 		}
 		
 	}
-
-	@Override
 	public void mostrarInventario(String nick) {
 		Scanner scaner = new Scanner(System.in);
 		String listaP = l_clientes.encontrarUsuario(nick).getLista_personajes();
@@ -124,6 +113,269 @@ public class SistemaImpl implements Sistema{
 		}
 		
 	}
+	public void comprarPersonaje(String nick) {
+		Scanner scaner = new Scanner(System.in);
+		System.out.println("Ingrese el nombre del personaje que desees comprar: ");
+		String nombre_per = scaner.nextLine();
+		System.out.println(nombre_per);
+		//esta wea no me reconoce los datos
+		if(l_estadisticas.buscarPersonaje(nombre_per) == false) {
+			System.out.println("El personaje no se encuentra");
+		}else {
+			if(l_clientes.encontrarUsuario(nick).getRp() > 975) {
+				int k=0;
+				String listaP = l_clientes.encontrarUsuario(nick).getLista_personajes();
+				String[] parteP = listaP.split(",");
+				while(k<l_clientes.encontrarUsuario(nick).getCantidad_p() && !parteP[k].equals(nombre_per)) {
+					k++;
+				}if(k==l_clientes.encontrarUsuario(nick).getCantidad_p()) {
+					l_clientes.encontrarUsuario(nick).setLista_personajes(l_clientes.encontrarUsuario(nick).getLista_personajes()+nombre_per);
+					l_clientes.encontrarUsuario(nick).setCantidad_p(l_clientes.encontrarUsuario(nick).getCantidad_p()+1);
+					l_clientes.encontrarUsuario(nick).setRp(l_clientes.encontrarUsuario(nick).getRp() - 975);
+					l_estadisticas.encontrarPersonaje(nombre_per).setRecaudacion(l_estadisticas.encontrarPersonaje(nombre_per).getRecaudacion()+975);
+					System.out.println("Personaje comprado con exito");
+					
+				}else {
+					System.out.println("Usted ya posee al personaje");
+				}
+				
+			}
+			
+		}
+		
+	}
+	public void recargarRP(String nick, int rp) {
+		if(rp<0) {
+			System.out.println("La cantidad ingresada no es valida");
+		}else {
+			l_clientes.encontrarUsuario(nick).setRp(l_clientes.encontrarUsuario(nick).getRp()+rp);
+			System.out.println("Cantidad ingresada con exito");
+		}
+		
+	}
+	@Override
+	public void skinsDisponibles(String nick) {
+		for(int i=0;i<l_personajes.getCant();i++) {
+			String[] parteS = l_personajes.encontrarPersonaje(i).getListaSkins().split(",");
+			for(int k=0;k<l_personajes.encontrarPersonaje(i).getCantidad_s();k++) {
+				System.out.println(parteS[k]+l_personajes.cant);
+			}
+		}
+	}
+	@Override
+	public void mostrarDatos(String nick) {
+		Scanner scaner = new Scanner(System.in);
+		System.out.println("Datos de cuenta: "+"\nNombre :"+ l_clientes.encontrarUsuario(nick).getNombre_c() + "\nNick :" + l_clientes.encontrarUsuario(nick).getNick()+"\nContraseña :"+l_clientes.encontrarUsuario(nick).getClave());
+		String res="";
+		System.out.println("¿Desea cambiar la contraseña? [1]");
+		res = scaner.nextLine();
+		while(res.equals("1")) {
+				System.out.println("Ingrese su contraseña actual: ");
+				String res1 = scaner.nextLine();
+				System.out.println("Ingrese denuevo su contraseña actual: ");
+				String res2 = scaner.nextLine();
+				if(res1.equals(res2) && res1.equals(l_clientes.encontrarUsuario(nick).getClave())) {
+					System.out.println("Ingrese su nueva contraseña : ");
+					String res3 = scaner.nextLine();
+					l_clientes.encontrarUsuario(nick).setClave(res3);
+					System.out.println("Contraseña cambiada con exito");
+					res="2";
+				}else {
+					System.out.println("Los datos no coinciden, intentelo de nuevo ");
+				}
+		}
+	}
+	//diego
+	public String VentasRol() {
+		String ventas = "";
+		String rol = "";
+		int VentasTop = 0;
+		int VentasJG = 0;
+		int VentasMid = 0;
+		int VentasADC = 0;
+		int VentasSup = 0;
+		for (int i = 0;i<l_personajes.cant;i++) {
+			for(int j = 0; j<l_estadisticas.cant;j++) {
+				
+				if(l_personajes.lista_p[i].getNombre_p().equals(l_estadisticas.lista_e[j].getNombre_p_r())) {
+					rol = l_personajes.lista_p[i].getRol();
+					if (rol.equals("TOP")) {
+						VentasTop += l_estadisticas.lista_e[j].getRecaudacion();
+					}
+					else if (rol.equals("JG")) {
+						VentasJG += l_estadisticas.lista_e[j].getRecaudacion();
+					}
+					else if (rol.equals("MID")) {
+						VentasMid += l_estadisticas.lista_e[j].getRecaudacion();
+					}
+					else if (rol.equals("ADC")) {
+						VentasADC += l_estadisticas.lista_e[j].getRecaudacion();
+					}
+					else if (rol.equals("SUP")) {
+						VentasSup += l_estadisticas.lista_e[j].getRecaudacion();
+					}
+				}
+				
+			}
+		}
+		ventas ="Las Ventas por rol son las siguientes: " +"\nVentas Top: " + VentasTop*6.15 +"\nVentas Jungla: "+VentasJG*6.15+"\nVentas Mid Lane: "+VentasMid*6.15+
+				"\nVentas AD Carry: "+ VentasADC*6.15+"\nVentas Suport: "+VentasSup*6.15;
+		
+		return ventas;
+	}
+
 	
+	//falta dinero por skin
+	public String VentasRegion() {
+		String ventas ="";
+		String []skin = new String [100];
+		String calidad = "";
+		String region = "";
+		int VentasLAS = 0;
+		int VentasLAN = 0;
+		int VentasEUW = 0;
+		int VentasKR = 0;
+		int VentasNA = 0;
+		int VentasRU = 0;
+		int ventaspersonajes = 0;
+		for (int i = 0;i<l_clientes.cant;i++) {
+			 
+				region = l_clientes.lista_c[i].getServidor();
+				if(region.equals("LAS")) {
+					ventaspersonajes = 975* l_clientes.lista_c[i].getCantidad_p();
+					VentasLAS += ventaspersonajes;
+					
+					
+				}
+				else if(region.equals("LAN")) {
+					 ventaspersonajes = 975* l_clientes.lista_c[i].getCantidad_p();
+					VentasLAN += ventaspersonajes;
+					
+					
+				}
+				else if(region.equals("EUW")) {
+					 ventaspersonajes = 975* l_clientes.lista_c[i].getCantidad_p();
+					VentasEUW += ventaspersonajes;
+					
+				}
+				else if(region.equals("KR")) {
+					ventaspersonajes = 975* l_clientes.lista_c[i].getCantidad_p();
+					VentasKR += ventaspersonajes;
+					
+				}
+				else if(region.equals("NA")) {
+					 ventaspersonajes = 975* l_clientes.lista_c[i].getCantidad_p();
+					VentasNA += ventaspersonajes;
+					
+				}
+				else if(region.equals("RU")) {
+					 ventaspersonajes = 975* l_clientes.lista_c[i].getCantidad_p();
+					VentasRU += ventaspersonajes;
+					
+				}
+				
+			}
+		ventas ="Las Ventas por region son las siguientes: " +"\nVentas LAS: " + VentasLAS*6.15 +"\nVentas LAN: "+VentasLAN*6.15+"\nVentas EUW: "+VentasEUW*6.15+
+				"\nVentas KR: "+ VentasKR*6.15+"\nVentas NA: "+VentasNA*6.15 +"\nVentas RU: "+VentasRU*6.15;
+		
+		return ventas;
+		
+	}
+
+	
+	public String VentasPersonaje() {
+		
+		String ventas ="Ventas por personaje: ";
+		
+		for (int i  = 0; i<l_estadisticas.cant;i++) {
+			ventas += "\n-"+l_estadisticas.lista_e[i].getNombre_p_r()+": "+l_estadisticas.lista_e[i].getRecaudacion();
+		}
+		return ventas;
+	}
+
+
+	public String CantPersonajesRol() {
+		
+		String cantPersonajes ="";
+		int TopCant = 0;
+		int MidCant = 0;
+		int JGCant = 0;
+		int ADCCant = 0;
+		int supCant = 0;
+		for(int i =0; i <l_personajes.cant;i++) {
+			if(l_personajes.lista_p[i].getRol().equals("TOP")) {
+				TopCant+=1;
+			}
+			else if(l_personajes.lista_p[i].getRol().equals("MID")) {
+				MidCant+=1;
+			}
+			else if(l_personajes.lista_p[i].getRol().equals("JG")) {
+				JGCant+=1;
+			}
+			else if(l_personajes.lista_p[i].getRol().equals("ADC")) {
+				ADCCant+=1;
+			}
+			else if(l_personajes.lista_p[i].getRol().equals("SUP")) {
+				supCant+=1;
+			}
+		}
+		cantPersonajes+="La cantidad de personajes por rol es: \n-Top Lane: "+TopCant+"\n-Jungle: "+JGCant+"\n-Mid Lane: "+MidCant
+				+"\n-AD Carry: "+ADCCant+"\n-Support: "+supCant;
+		return cantPersonajes;
+	}
+
+	/*No se usa
+	public void newPersonaje(String newName, String newRol,String newskins,
+			String calidadNewSkins) {
+		l_personajes.
+		
+	}*/
+
+	@Override
+	public void NewSkin(String newName, String newskin, String newSkinQual) {
+		l_personajes.encontrarPersonaje(newName).setListaCalidadS(l_personajes.encontrarPersonaje(newName).getListaCalidadS()+newSkinQual+",");
+		l_personajes.encontrarPersonaje(newName).setListaSkins(l_personajes.encontrarPersonaje(newName).getListaSkins()+newskin+",");
+		l_personajes.encontrarPersonaje(newName).setCantidad_s(l_personajes.encontrarPersonaje(newName).getCantidad_s() + 1);
+		System.out.println(l_personajes.encontrarPersonaje(newName).getListaSkins());
+	}
+
+	@Override
+	public void BloquearJugador(String banName) {
+		l_clientes.eliminarClien(banName);
+		
+	}
+
+	@Override
+	public String CuentasMayorMenor() {
+		
+		String  MayorMenor ="Cuentas Ordenadas por nivel";
+		String cuentaMayor="";
+		int mayor = -1;
+		String [] listaMayorMenor = new String[l_clientes.cant];
+		int [] listaMayorMenorNivel = new int[l_clientes.cant];
+		for (int i = 0;i< l_clientes.cant;i++) {
+			listaMayorMenor[i] = l_clientes.lista_c[i].getNick();
+			listaMayorMenorNivel[i] = l_clientes.lista_c[i].getNivel();
+			
+		}
+		for (int a = 0;a< listaMayorMenorNivel.length;a++) {
+			for (int b = 0;b< listaMayorMenor.length-1;b++) {
+				if (listaMayorMenorNivel[a]>listaMayorMenorNivel[b]) {
+					int temp = listaMayorMenorNivel[b];
+					listaMayorMenorNivel[b]=listaMayorMenorNivel[a];
+					listaMayorMenorNivel[a] = temp;
+					
+					String temp1 = listaMayorMenor[b];
+					listaMayorMenor[b]=listaMayorMenor[a];
+					listaMayorMenor[a] = temp1;
+				}
+			}
+		}
+		for(int j =0; j<listaMayorMenorNivel.length;j++) {
+			MayorMenor += "\n"+listaMayorMenor[j]+ ": "+listaMayorMenorNivel[j];
+		}
+		return MayorMenor;
+	}
 	
 }
+ 
