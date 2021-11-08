@@ -8,7 +8,7 @@ public class Cliente {
 	private int rp;
 	private int cantidad_p;
 	private int cantidad_e;
-	private String lista_personajes;
+	private String  lista_personajes;
 	private String lista_skins;
 	private String servidor;
 	public Cliente(String nombre_c, String clave, String nick, int nivel, int rp, int cantidad_p, int cantidad_e,
