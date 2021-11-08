@@ -3,33 +3,48 @@ package Logica;
 import Dominio.Estadistica;
 
 public class ListaEstadisticas {
-	public Estadistica[] lista_e;
-	public int cant;
-	public int max;
-	
-	public ListaEstadisticas(int max) {
-		lista_e = new Estadistica[max];
-		cant=0;
-		this.max=max;
-	}
-	public boolean ingresar(Estadistica estadistica) {
-		if(cant<max) {
-			lista_e[cant] = estadistica;
-			cant++;
-			return true;
-		}else {
-			return false;
-		}
-	}
-	public Estadistica encontrarPersonaje(String n_personaje) {
-		int i=0;
-		while(i<=cant && !lista_e[i].getNombre_p_r().equals(n_personaje)) {
-			i++;
-		}
-		if(i>cant) {
-			return null;
-		}else {
-			return lista_e[i];
-		}
-	}
+    public Estadistica[] lista_e;
+    public int cant;
+    public int max;
+
+    public ListaEstadisticas(int max) {
+        lista_e = new Estadistica[max];
+        cant=0;
+        this.max=max;
+    }
+    public boolean ingresar(Estadistica estadistica) {
+        if(cant<max) {
+            lista_e[cant] = estadistica;
+            cant++;
+            return true;
+        }else {
+            return false;
+        }
+    }
+    public Estadistica encontrarPersonaje(String n_personaje) {
+        int i=0;
+        while(i<=cant && !lista_e[i].getNombre_p_r().equals(n_personaje)) {
+            i++;
+        }
+        if(i>cant) {
+            return null;
+        }else {
+            return lista_e[i];
+        }
+    }
+    public boolean buscarPersonaje(String nombre_per) {
+        int i=0;
+        while(i<cant && !lista_e[i].getNombre_p_r().equals(nombre_per)) {
+            i++;
+        }
+        if(i==cant) {
+            return false;
+        }else {
+            return true;
+        }
+
+    }
+    public int getCant() {
+        return cant;
+    }
 }	
