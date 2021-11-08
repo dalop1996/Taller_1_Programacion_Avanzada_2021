@@ -16,14 +16,43 @@ public class ListaPersonajes {
 	public boolean ingresar(Personaje personaje) {
 		if(cant<max) {
 			lista_p[cant] = personaje;
+			cant++;
 			return true;
 		}else {
 			return false;
 		}
 	}
+	
+	public void ingresarSkin(String name,String Skin, String Quality) {
+		int i = 0;
+        while(i<cant&& !lista_p[i].getNombre_p().equals(name)){
+            i++;
+        }
+        if(i==cant){
+            System.out.print("No se encontro el usuario");
+        }
+        else{
+            lista_p[i].AgregarSkin(Skin, Quality);;
+            
+            }
+		
+	}
+	
 	public Personaje encontrarPersonaje(String nombre_p) {
 		int i=0;
 		while(i<=cant && !lista_p[i].getNombre_p().equals(nombre_p)) {
+			i++;
+		}
+		if(i>cant) {
+			return null;
+		}else {
+			return lista_p[i];
+		}
+		
+	}
+	public Personaje obtenerRol(String rol) {
+		int i=0;
+		while(i<=cant && !lista_p[i].getRol().equals(rol)) {
 			i++;
 		}
 		if(i>cant) {
@@ -40,5 +69,20 @@ public class ListaPersonajes {
 
         }
         return r;
+	}
+	
+	public void nuevoPersonaje(String nombre, String rol, int cantS, String Skins, String calidad) {
+		int i =0;
+		while(i<cant && lista_p[i].getNombre_p().equals(nombre)) {
+			i++;
+		}if(i==cant) {
+			System.out.println("Sadge");
+		}else {
+			for(int k=i;k<cant+1;k++) {
+				lista_p[k] = lista_p[k+1];
+			}
+			cant++;
+			
+		}
 	}
 }	
