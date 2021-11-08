@@ -12,13 +12,15 @@ public class APP {
 		int cantCuentas = leerCuentas(sis);
 		int cantPersonajes = leerPersonajes(sis);
 		int cantEstadisticas = leerEstadisticas(sis);
+		String [] BannedName = new String [1000];
+        String [] BannedPass = new String [1000];
 		
 		String respuesta="";
 		while(!respuesta.equals("1") && !respuesta.equals("2") && !respuesta.equals("3")) {
 			System.out.println("Bienvenido al menu princiopal\n¿Desea iniciar sesion [1] , registrarse [2] o cerrar [3] ?");
 			respuesta = scaner.next();
 			if(respuesta.equals("1")) {
-				respuesta =inicioSesion(sis);
+				respuesta =inicioSesion(sis, BannedName, BannedPass);
 			}if(respuesta.equals("2")) {
 				respuesta=registrarse(sis);
 			}if(respuesta.equals("3")) {
@@ -63,7 +65,7 @@ public class APP {
 		return res;
 	}
 
-	private static String inicioSesion(Sistema sis) {
+	private static String inicioSesion(Sistema sis, String[] bannedName, String[] bannedPass) {
 		Scanner scaner = new Scanner(System.in);
 		String respuesta="";
 		System.out.println("Ingrese su Nick: ");
@@ -71,7 +73,87 @@ public class APP {
 		System.out.println("Ingrese su contraseña: ");
 		String clave = scaner.nextLine();
 		if(nick.equals("ADMIN") && clave.equals("ADMIN")) {
-			//menu admin
+			System.out.println("gg");
+			boolean condicion1 = true;
+            while(condicion1) {
+                System.out.println("Bienvenido al menu de administrador, escoja lo que desea realizar:"
+                        + "\n[A] Recaudacion Ventas por rol"
+                        +"\n[B] Recaudacion total ventas por region"
+                        +"\n[C] Recaudacion venta por personaje"
+                        +"\n[D] Cantidad de personajes por rol"
+                        +"\n[E] Agregar personaje"
+                        +"\n[F] Agregar Skin"
+                        +"\n[G] Bloquear jugador"
+                        +"\n[H] Cuentas de mayor a menor");
+                String resA = scaner.next().toUpperCase();
+                if(resA.equals("A")) {
+                    System.out.println(sis.VentasRol());
+                    condicion1 = bucle();
+                }
+                else if(resA.equals("B")) {
+                	System.out.println(sis.VentasRegion());
+                    condicion1 = bucle();
+                }
+                else if(resA.equals("C")) {
+                	System.out.println(sis.VentasPersonaje());
+                    condicion1 = bucle();
+                }
+                else if(resA.equals("D")) {
+                	System.out.println(sis.CantPersonajesRol());
+                    condicion1 = bucle();
+                }
+                else if(resA.equals("E")) {
+                    //rev
+                    System.out.println("Ingrese el nombre del nuevo personaje a agregar:");
+                    String newName = scaner.next();
+                    System.out.println("Ingrese el rol del nuevo personajea a agregar: ");
+                    String newRol = scaner.next();
+                    
+                    int newCantSkins = 1;
+                    
+                    System.out.println("Ingrese el nombre de la skin del nuevo personaje: ");
+                    String newSkinName = scaner.next();
+                      
+                    System.out.println("Ingrese la calidad de la skin (M,D,L,E,N)");
+                    String newSkinQual = scaner.next();
+                        
+                   
+                    sis.agregarPersonaje(newName, newRol, newCantSkins, newSkinName, newSkinQual);
+                    condicion1 = bucle();
+                }
+                else if(resA.equals("F")) {
+                    System.out.println("Ingrese el nombre del personaje al cual se le agregara la skin:");
+                    String newName = scaner.next();
+                    System.out.println("Ingrese el nombre de la nueva Skin:");
+                    String newskin = scaner.next();
+                    System.out.println("Ingrese la calidad de la nueva skin:");
+                    String newSkinQual = scaner.next();
+                    sis.NewSkin(newName,newskin,newSkinQual);
+                    condicion1 = bucle();
+                }
+                else if(resA.equals("G")) {
+                    System.out.println("Ingrese el nombre de cuenta del jugador a banear por pete: ");
+                    String banName = scaner.next();
+                    System.out.println("Ingrese la contraseÃ±a del pete: ");
+                    String banPass = scaner.next();
+                    for (int i =0 ;i<=bannedName.length;i++) {
+                        if(!bannedName[i].equals(banName) && bannedName[i] ==null) {
+                            bannedName[i] = banName;
+                            bannedPass[i] = banPass;
+                        }
+                    }
+                    sis.BloquearJugador(banName);
+                    condicion1 = bucle();
+                }
+                else if(resA.equals("H")) {
+                	System.out.println(sis.CuentasMayorMenor());
+                    condicion1 = bucle();
+                }
+                else {
+                    System.out.println("Ingrese una opcion valida");
+                    condicion1 = bucle();
+                }
+            }
 		}else{
 			if(sis.verificar(nick,clave) == true) {
 				boolean condicion = true;
@@ -84,16 +166,22 @@ public class APP {
 						sis.comprarSkin(nombre_per,nick);
 						condicion = bucle();
 					}else if(res.equals("B")) {
-						
+						sis.comprarPersonaje(nick);
+						condicion = bucle();
 					}else if(res.equals("C")) {
-						
+						sis.skinsDisponibles(nick);
+						condicion = bucle();
 					}else if(res.equals("D")) {
 						sis.mostrarInventario(nick);
 						condicion = bucle();
 					}else if(res.equals("E")) {
-						
+						System.out.println("Ingrese la cantidad de RP que desee recargar: ");
+						int rp = scaner.nextInt();
+						sis.recargarRP(nick,rp);
+						condicion = bucle();
 					}else if(res.equals("F")) {
-						
+						sis.mostrarDatos(nick);
+						condicion = bucle();
 					}else {
 						System.out.println("Ingrese una opcion valida");
 					}
@@ -113,13 +201,9 @@ public class APP {
 		String res="";
 		boolean condicion = false;
 		while(!res.equals("1") && !res.equals("2") && !res.equals("3")) {
-			System.out.println("¿Desea realizar otra accion [1] , volver al menu principal [2] o Cerrar[3]");
+			System.out.println("¿Desea realizar otra accion [1] , volver al menu principal [2]");
 			res = scaner.next();
-			if(res.equals("3")) {
-				//arreglar para el que cerrar se termine el programa
-				cerrar();
-				break;
-			}if(res.equals("2")) {
+			if(res.equals("2")) {
 				res="4";
 				condicion=false;
 				break;
@@ -149,8 +233,6 @@ public class APP {
 		BufferedReader arch = new BufferedReader(new FileReader("Personajes.txt"));
 		String linea;
 		
-		String[] ListaSkins = new String[500];
-		String[] ListaCalidad = new String[500];
 		int cant=0;
 		while((linea = arch.readLine()) != null) {
 			String skin = "";
@@ -166,9 +248,8 @@ public class APP {
 				calidad +=parte[cantidadS]+",";
 				cantidadS++;
 			}
-			ListaSkins[cant] = skin;
-			ListaCalidad[cant] = calidad;
-			//System.out.println(nombre_p+rol+cantidad_s+ListaSkins[cant]+ListaCalidad[cant]);
+			
+			System.out.println(nombre_p);
 			sis.agregarPersonaje(nombre_p,rol,cantidad_s,skin,calidad);
 			cant++;
 		}
@@ -203,7 +284,7 @@ public class APP {
 				}
 			}
 			String servidor = parte[cant_vueltas];
-			System.out.println(lista_personajes +lista_skins);
+			//System.out.println(lista_personajes +lista_skins);
 			sis.agregarCuenta(nombre_c,clave,nick,nivel,rp,cantidad_p,cantidad_s,lista_personajes,lista_skins, servidor);
 			cant++;
 			
