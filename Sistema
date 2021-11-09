@@ -1,44 +1,124 @@
 package Logica;
 
 public interface Sistema {
-
+	/**
+	 * Adds the info from the txt to the containers
+	 * @param nombre_p
+	 * @param rol
+	 * @param cantidad_s
+	 * @param listaSkins
+	 * @param listaCalidad
+	 * @return
+	 */
 	boolean agregarPersonaje(String nombre_p, String rol, int cantidad_s, String listaSkins, String listaCalidad);
-
+	 
+	/**
+	 * Adds the info from the txt to the containers
+	 * @param nombre_p_r
+	 * @param recaudacion
+	 * @return
+	 */
 	boolean agregarEstadistica(String nombre_p_r, int recaudacion);
-
+	
+	/**
+	 * Adds the info from the txt to the containers
+	 * @param nombre_c
+	 * @param clave
+	 * @param nick
+	 * @param nivel
+	 * @param rp
+	 * @param cantidad_p
+	 * @param cantidad_s
+	 * @param lista_personajes
+	 * @param lista_Skins
+	 * @param servidor
+	 * @return
+	 */
 	boolean agregarCuenta(String nombre_c, String clave, String nick, int nivel, int rp, int cantidad_p, int cantidad_s,
 			String lista_personajes, String lista_Skins, String servidor);
-
+	/**
+	 * Verifies if the info is correct
+	 * @param nick
+	 * @param clave
+	 * @return
+	 */
 	boolean verificar(String nick, String clave);
-
+	/**
+	 * Buys a skin from the ones available and updates the containers
+	 * @param nombre_per
+	 * @param nick
+	 */
 	void comprarSkin(String nombre_per, String nick);
-
+	/**
+	 * Displays the inventory of the user
+	 * @param nick
+	 */
 	void mostrarInventario(String nick);
-
-	String VentasRol();
-
-	String VentasRegion();
-
-	String VentasPersonaje();
-
-	String CantPersonajesRol();
-
-
-
-	//void newPersonaje(String newName, String newRol, String newskins, String calidadNewSkins); NO SE USA
-
-	void NewSkin(String newName, String newskin, String newSkinQual);
-
-	void BloquearJugador(String banName);
-
-	String CuentasMayorMenor();
-
+	/**
+	 * Buys a character and updates the containers
+	 * @param nick
+	 */
 	void comprarPersonaje(String nick);
-
-	void skinsDisponibles(String nick);
-
+	/**
+	 * Adds the currency to the user wallet
+	 * @param nick
+	 * @param rp
+	 */
 	void recargarRP(String nick, int rp);
-
+	/**
+	 * Displays the availables skins from the inventory
+	 * @param nick
+	 */
+	void skinsDisponibles(String nick);
+	/**
+	 * Displays information of the user
+	 * @param nick
+	 */
 	void mostrarDatos(String nick);
-	
+	/**
+	 * Displays sales per Rol
+	 * @return
+	 */
+	String VentasRol();
+	/**
+	 * Displays sales per region
+	 * @return
+	 */
+    String VentasRegion();
+    /**
+     * Displays sales per character
+     * @return
+     */
+    String VentasPersonaje();
+    /**
+     * Displays the amount of characters per rol
+     * @return
+     */
+    String CantPersonajesRol();
+    /**
+     * Adds a new character 
+     * @param newName
+     * @param newRol
+     * @param newCantSkins
+     * @param newskins
+     * @param calidadNewSkins
+     */
+    void newPersonaje(String newName, String newRol, int newCantSkins, String[] newskins, String[] calidadNewSkins);
+    /**
+     * Adds a new skin to a character
+     * @param newName
+     * @param newskin
+     * @param newSkinQual
+     */
+    void NewSkin(String newName, String newskin, String newSkinQual);
+    /**
+     * Perma Bans a user name and password
+     * @param banName
+     */
+    void BloquearJugador(String banName);
+    /**
+     * Displays the nickname and lvl of the account from highest to lowest lvl
+     * @return
+     */
+    String CuentasMayorMenor();
 }
