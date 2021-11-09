@@ -32,7 +32,6 @@ public class APP {
 	}
 
 	private static void cerrar() {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -73,7 +72,6 @@ public class APP {
 		System.out.println("Ingrese su contraseña: ");
 		String clave = scaner.nextLine();
 		if(nick.equals("ADMIN") && clave.equals("ADMIN")) {
-			System.out.println("gg");
 			boolean condicion1 = true;
             while(condicion1) {
                 System.out.println("Bienvenido al menu de administrador, escoja lo que desea realizar:"
@@ -103,22 +101,25 @@ public class APP {
                     condicion1 = bucle();
                 }
                 else if(resA.equals("E")) {
-                    //rev
+          
                     System.out.println("Ingrese el nombre del nuevo personaje a agregar:");
                     String newName = scaner.next();
                     System.out.println("Ingrese el rol del nuevo personajea a agregar: ");
                     String newRol = scaner.next();
-                    
-                    int newCantSkins = 1;
-                    
-                    System.out.println("Ingrese el nombre de la skin del nuevo personaje: ");
-                    String newSkinName = scaner.next();
-                      
-                    System.out.println("Ingrese la calidad de la skin (M,D,L,E,N)");
-                    String newSkinQual = scaner.next();
-                        
                    
-                    sis.agregarPersonaje(newName, newRol, newCantSkins, newSkinName, newSkinQual);
+                    System.out.println("Ingrese la cantidad de skins que tendra el personaje");
+                    int newCantSkins = scaner.nextInt();
+                    String [] newskins = new String[newCantSkins];
+                    String [] CalidadNewSkins = new String[newCantSkins];
+                    for(int i = 0; i<= newCantSkins; i++) {
+                        System.out.println("Ingrese el nombre de la skin del nuevo personaje: ");
+                        String newSkinName = scaner.next();
+                        newskins[i]= newSkinName;
+                        System.out.println("Ingrese la calidad de la skin (M,D,L,E,N)");
+                        String newSkinQual = scaner.next();
+                        CalidadNewSkins[i] = newSkinQual;
+                    }
+                    sis.newPersonaje(newName, newRol, newCantSkins, newskins, CalidadNewSkins);
                     condicion1 = bucle();
                 }
                 else if(resA.equals("F")) {
@@ -132,12 +133,12 @@ public class APP {
                     condicion1 = bucle();
                 }
                 else if(resA.equals("G")) {
-                    System.out.println("Ingrese el nombre de cuenta del jugador a banear por pete: ");
+                	System.out.println("Ingrese el nombre de cuenta del jugador a banear por pete: ");
                     String banName = scaner.next();
                     System.out.println("Ingrese la contraseÃ±a del pete: ");
                     String banPass = scaner.next();
-                    for (int i =0 ;i<=bannedName.length;i++) {
-                        if(!bannedName[i].equals(banName) && bannedName[i] ==null) {
+                    for (int i =0 ;i<bannedName.length;i++) {
+                        if(bannedName[i]==null) {
                             bannedName[i] = banName;
                             bannedPass[i] = banPass;
                         }
@@ -248,8 +249,6 @@ public class APP {
 				calidad +=parte[cantidadS]+",";
 				cantidadS++;
 			}
-			
-			System.out.println(nombre_p);
 			sis.agregarPersonaje(nombre_p,rol,cantidad_s,skin,calidad);
 			cant++;
 		}
