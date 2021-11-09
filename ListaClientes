@@ -3,61 +3,60 @@ package Logica;
 import Dominio.Cliente;
 
 public class ListaClientes {
-    public Cliente[] lista_c;
-    public int cant;
-    public int max;
-
-    public ListaClientes(int max) {
-        lista_c = new Cliente[max];
-        cant = 0;
-        this.max = max;
-    }
-    public boolean ingresar(Cliente cliente) {
-        if(cant<max) {
-            lista_c[cant] = cliente;
-            cant++;
-            return true;
-        }else {
-            return false;
-        }
-    }
-    public boolean buscarUsuario(String nick,String clave) {
-        int i=0;
-        while(i<cant && !lista_c[i].getNick().equals(nick) && !lista_c[i].getClave().equals(clave)) {
-            i++;
-        }
-        if(i==cant) {
-            return false;
-        }else {
-            return true;
-        }
-
-    }
-    public Cliente encontrarUsuario(String nick) {
-        int i=0;
-        while(i<cant && !lista_c[i].getNick().equals(nick)) {
-            i++;
-        }
-        if(i==cant) {
-            return null;
-        }else {
-            return lista_c[i];
-        }
-
-    }
-    public void eliminarClien(String name) {
-		int i =0;
-		while(i<cant && !lista_c[i].getNombre_c().equals(name)) {
-			i++;
-		}if(i==cant) {
-			System.out.println("No se encontro el nombre");
+	public Cliente[] lista_c;
+	public int cant;
+	public int max;
+	
+	public ListaClientes(int max) {
+		lista_c = new Cliente[max];
+		cant = 0;
+		this.max = max;
+	}
+	public boolean ingresar(Cliente cliente) {
+		if(cant<max) {
+			lista_c[cant] = cliente;
+			cant++;
+			return true;
 		}else {
-			for(int k=i;k<cant;k++) {
-				lista_c[k] = lista_c[k+1];
-			}
-			cant--;
-			System.out.println("TE FUISTE DE BAN MAQUINOLA");
+			return false;
 		}
 	}
+	public boolean buscarUsuario(String nick,String clave) {
+		int i=0;
+		while(i<cant && !lista_c[i].getNick().equals(nick) && !lista_c[i].getClave().equals(clave)) {
+			i++;
+		}
+		if(i==cant) {
+			return false;
+		}else {
+			return true;
+		}
+	
+	}
+	public Cliente encontrarUsuario(String nick) {
+		int i=0;
+		while(i<cant && !lista_c[i].getNick().equals(nick)) {
+			i++;
+		}
+		if(i==cant) {
+			return null;
+		}else {
+			return lista_c[i];
+		}
+		
+	}
+	public void eliminarClien(String name) {
+        int i =0;
+        while(i<cant && !lista_c[i].getNombre_c().equals(name)) {
+            i++;
+        }if(i==cant) {
+            System.out.println("No se encontro el nombre");
+        }else {
+            for(int k=i;k<cant;k++) {
+                lista_c[k] = lista_c[k+1];
+            }
+            cant--;
+            System.out.println("TE FUISTE DE BAN MAQUINOLA");
+        }
+    }
 }
-
