@@ -17,7 +17,6 @@ public class SistemaImpl implements Sistema{
 			String listaCalidad) {
 		Personaje per = new Personaje(nombre_p,rol,cantidad_s,listaSkins,listaCalidad);
 		boolean ingreso = l_personajes.ingresar(per);
-		System.out.println(per.toString());
 		return ingreso;
 	}
 	public boolean agregarEstadistica(String nombre_p_r, int recaudacion) {
@@ -49,10 +48,10 @@ public class SistemaImpl implements Sistema{
 			if(k==155) {
 				System.out.println("No puedes comprar la skins porque no tienes este personaje en tu inventario");
 			}else {
-				System.out.println("Skins disponibles de "+nombre_per+":");
 				String[] parteS = listaS.split(",");
-				for(int i=0; i< l_personajes.encontrarPersonaje(nombre_per).getCantidad_s();i++) {
+				System.out.println("Skins disponibles de "+nombre_per+":");
 				
+				for(int i=0; i< l_personajes.encontrarPersonaje(nombre_per).getCantidad_s();i++) {
 					System.out.println(parteS[i]);
 				}
 				System.out.println("Escriba el nombre de la Skin a comprar:");
@@ -93,6 +92,7 @@ public class SistemaImpl implements Sistema{
 		}
 		
 	}
+	//arreglar
 	public void mostrarInventario(String nick) {
 		Scanner scaner = new Scanner(System.in);
 		String listaP = l_clientes.encontrarUsuario(nick).getLista_personajes();
@@ -105,8 +105,10 @@ public class SistemaImpl implements Sistema{
 			if(l_clientes.encontrarUsuario(nick).getCantidad_e() == 0) {
 				System.out.println("No tiene skins");
 			}else {
-				for(int k=0; k<l_clientes.encontrarUsuario(nick).getCantidad_e();k++) {
-					System.out.println("Skin "+k+1+": "+ parteS[k]);
+				int k=0;
+				while(k<l_clientes.encontrarUsuario(nick).getCantidad_e()) {
+					System.out.println(parteS[k]);
+					k++;
 				}
 			}
 			
@@ -116,9 +118,7 @@ public class SistemaImpl implements Sistema{
 	public void comprarPersonaje(String nick) {
 		Scanner scaner = new Scanner(System.in);
 		System.out.println("Ingrese el nombre del personaje que desees comprar: ");
-		String nombre_per = scaner.nextLine();
-		System.out.println(nombre_per);
-		//esta wea no me reconoce los datos
+		String nombre_per = scaner.nextLine();	
 		if(l_estadisticas.buscarPersonaje(nombre_per) == false) {
 			System.out.println("El personaje no se encuentra");
 		}else {
@@ -155,12 +155,27 @@ public class SistemaImpl implements Sistema{
 	}
 	@Override
 	public void skinsDisponibles(String nick) {
+		/*System.out.println("Skins disponibles");
+		String txt="";
+		int cant=0;
+		String[] parteSC = l_clientes.encontrarUsuario(nick).getLista_skins().split(",");
 		for(int i=0;i<l_personajes.getCant();i++) {
 			String[] parteS = l_personajes.encontrarPersonaje(i).getListaSkins().split(",");
 			for(int k=0;k<l_personajes.encontrarPersonaje(i).getCantidad_s();k++) {
-				System.out.println(parteS[k]+l_personajes.cant);
+				for(int j=0;j<l_clientes.encontrarUsuario(nick).getCantidad_e();j++) {
+					if(!parteSC[j].equals(parteS[k])) {
+						txt+=parteS[k]+",";
+						cant++;
+					}
+				}
 			}
 		}
+		String[] parte = txt.split(",");
+		for(int s=0;s<cant;s++) {
+			System.out.println(parte[s]);
+		}
+		*/
+		System.out.println("Opss.... se compilo el codigo pero no funciono, revisar codigo");
 	}
 	@Override
 	public void mostrarDatos(String nick) {
@@ -194,8 +209,8 @@ public class SistemaImpl implements Sistema{
 		int VentasMid = 0;
 		int VentasADC = 0;
 		int VentasSup = 0;
-		for (int i = 0;i<l_personajes.cant;i++) {
-			for(int j = 0; j<l_estadisticas.cant;j++) {
+		for (int i = 0;i<l_personajes.getCant();i++) {
+			for(int j = 0; j<l_estadisticas.getCant();j++) {
 				
 				if(l_personajes.lista_p[i].getNombre_p().equals(l_estadisticas.lista_e[j].getNombre_p_r())) {
 					rol = l_personajes.lista_p[i].getRol();
@@ -228,7 +243,7 @@ public class SistemaImpl implements Sistema{
 	//falta dinero por skin
 	public String VentasRegion() {
 		String ventas ="";
-		String []skin = new String [100];
+		/*String []skin = new String [100];
 		String calidad = "";
 		String region = "";
 		int VentasLAS = 0;
@@ -245,33 +260,48 @@ public class SistemaImpl implements Sistema{
 					ventaspersonajes = 975* l_clientes.lista_c[i].getCantidad_p();
 					VentasLAS += ventaspersonajes;
 					
-					
+					for(int j = 0; j<l_clientes.lista_c[i].getLista_skins().length();j++) {
+						
+						for(int a = 0; a<l_personajes.cant;a++) {
+						
+						}
+					}
 				}
 				else if(region.equals("LAN")) {
 					 ventaspersonajes = 975* l_clientes.lista_c[i].getCantidad_p();
 					VentasLAN += ventaspersonajes;
 					
-					
+					for(int j = 0; j<l_personajes.cant;j++) {
+						
+					}
 				}
 				else if(region.equals("EUW")) {
 					 ventaspersonajes = 975* l_clientes.lista_c[i].getCantidad_p();
 					VentasEUW += ventaspersonajes;
-					
+					for(int j = 0; j<l_personajes.cant;j++) {
+						
+					}
 				}
 				else if(region.equals("KR")) {
 					ventaspersonajes = 975* l_clientes.lista_c[i].getCantidad_p();
 					VentasKR += ventaspersonajes;
-					
+					for(int j = 0; j<l_personajes.cant;j++) {
+						
+					}
 				}
 				else if(region.equals("NA")) {
 					 ventaspersonajes = 975* l_clientes.lista_c[i].getCantidad_p();
 					VentasNA += ventaspersonajes;
-					
+					for(int j = 0; j<l_personajes.cant;j++) {
+						
+					}
 				}
 				else if(region.equals("RU")) {
 					 ventaspersonajes = 975* l_clientes.lista_c[i].getCantidad_p();
 					VentasRU += ventaspersonajes;
-					
+					for(int j = 0; j<l_personajes.cant;j++) {
+						
+					}
 				}
 				
 			}
@@ -279,7 +309,8 @@ public class SistemaImpl implements Sistema{
 				"\nVentas KR: "+ VentasKR*6.15+"\nVentas NA: "+VentasNA*6.15 +"\nVentas RU: "+VentasRU*6.15;
 		
 		return ventas;
-		
+		*/
+		return ventas="Opss.... se compilo el codigo pero no funciono, revisar codigo";
 	}
 
 	
@@ -324,12 +355,12 @@ public class SistemaImpl implements Sistema{
 		return cantPersonajes;
 	}
 
-	/*No se usa
-	public void newPersonaje(String newName, String newRol,String newskins,
-			String calidadNewSkins) {
-		l_personajes.
+
+	public void newPersonaje(String newName, String newRol, int newCantSkins, String[] newskins,
+			String[] calidadNewSkins) {
 		
-	}*/
+		
+	}
 
 	@Override
 	public void NewSkin(String newName, String newskin, String newSkinQual) {
@@ -337,12 +368,6 @@ public class SistemaImpl implements Sistema{
 		l_personajes.encontrarPersonaje(newName).setListaSkins(l_personajes.encontrarPersonaje(newName).getListaSkins()+newskin+",");
 		l_personajes.encontrarPersonaje(newName).setCantidad_s(l_personajes.encontrarPersonaje(newName).getCantidad_s() + 1);
 		System.out.println(l_personajes.encontrarPersonaje(newName).getListaSkins());
-	}
-
-	@Override
-	public void BloquearJugador(String banName) {
-		l_clientes.eliminarClien(banName);
-		
 	}
 
 	@Override
@@ -376,6 +401,9 @@ public class SistemaImpl implements Sistema{
 		}
 		return MayorMenor;
 	}
-	
+	public void BloquearJugador(String banName) {
+        l_clientes.eliminarClien(banName);
+
+    }
 }
  
